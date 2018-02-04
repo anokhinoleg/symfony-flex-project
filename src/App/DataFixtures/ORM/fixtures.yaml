@@ -1,0 +1,7 @@
+App\App\Entity\Users:
+    users{1..10}:
+        email: '<email()>'
+        password: '<password()>'
+        role: 'ROLE_USER'
+        regDate: '<date_create()>'
+        lastVisit: '<date_create()>'

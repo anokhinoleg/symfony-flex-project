@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="container">
+            <a href="#" class="js-filter-add">
+                <span class="fa fa-plus-circle"></span>
+                Add Another Filter
+            </a>
+            {{ form_start(filter_form) }}
+                {{ form_row(filter_form.filter_by) }}
+                {{ form_row(filter_form.value) }}
+                <button type="submit" class="btn btn-primary" >Search</button>
+            {{ form_end(filter_form) }}
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">Last visit</th>
+                <th scope="col">Registartion date</th>
+                <th scope="col">Plain password</th>
+                <th scope="col">Role</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th scope="row">{{ user.id }}</th>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.lastVisit|date('Y-m-d') }}</td>
+                        <td>{{ user.regDate|date('Y-m-d') }}</td>
+                        <td>{{ user.password}}</td>
+                        <td>{{ user.role }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
