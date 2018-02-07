@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: olegyurievich
- * Date: 04.02.18
- * Time: 11:57
+ * User: developer
+ * Date: 07.02.18
+ * Time: 19:14
  */
 
 namespace App\App\Form;
@@ -14,14 +14,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Button;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FilterType extends AbstractType
+class WrapperType extends AbstractType
 {
-    private $em;
-
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -29,23 +28,15 @@ class FilterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('filter_by', ChoiceType::class, [
-                'choices' =>  array_flip($this->em->getClassMetadata(Users::class)->getColumnNames())
-            ])
-            ->add('equivalent', ChoiceType::class, [
-                'choices' => [
-                    '=' => '=',
-                    '!=' => '!=',
-                ]
-            ])
-            ->add('value', TextType::class)
-        ;
+        $builder->add('filters', CollectionType::class, array(
+            'entry_type' => FilterType::class,
+            'entry_options' => array('label' => false),
+            'allow_add' => true,
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
 
     }
-
 }

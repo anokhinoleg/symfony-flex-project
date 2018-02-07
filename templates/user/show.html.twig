@@ -7,12 +7,14 @@
                 <span class="fa fa-plus-circle"></span>
                 Add Another Filter
             </a>
-            {{ form_start(filter_form) }}
-                {{ form_row(filter_form.filter_by) }}
-                {{ form_row(filter_form.value) }}
+            {{ form_start(wrapper_form) }}
+
                 <button type="submit" class="btn btn-primary" >Search</button>
-            {{ form_end(filter_form) }}
+            {{ form_end(wrapper_form) }}
         </div>
+        <ul class="tags" data-prototype="{{ form_widget(wrapper_form.filters.vars.prototype)|e('html_attr') }}">
+
+        </ul>
         <table class="table">
             <thead>
             <tr>
@@ -38,4 +40,35 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">   </script>
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+        jQuery(document).ready(function() {
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('ul.tags');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm($collectionHolder, $newLinkLi);
+        });
+        });
+    </script>
 {% endblock %}

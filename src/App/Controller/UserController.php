@@ -10,6 +10,7 @@ namespace App\App\Controller;
 
 use App\App\Entity\Users;
 use App\App\Form\FilterType;
+use App\App\Form\WrapperType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Tests\Compiler\D;
@@ -24,15 +25,14 @@ class UserController extends Controller
      */
     public function showUsers()
     {
-
-
         $em = $this->getDoctrine()->getRepository(Users::class);
         $users = $em->findAll();
-        $form = $this->createForm(FilterType::class);
+        $form = $this->createForm(WrapperType::class);
 //        var_dump($this->getDoctrine()->getManager()->getClassMetadata(Users::class));
+
         return $this->render('user/show.html.twig', [
             'users' => $users,
-            'filter_form' => $form->createView()
+            'wrapper_form' => $form->createView()
         ]);
     }
 
